@@ -4,8 +4,24 @@ document.addEventListener("DOMContentLoaded", function () {
     const checkbox = document.getElementById("rule_disabled");
 
     if (checkbox) {
-        checkbox.addEventListener("change", function () {
-            const autopayValue = this.checked ? "end_of_month" : "disabled";
+        checkbox.addEventListener("change", function (event) {
+            const autopayValue = this.checked ? "on_due_date" : "disabled";
+            const noBankAccounts = document.querySelector("[name='no_bank_accounts']");
+            const warningSpan = document.getElementById("autopay-warning");
+
+            if (noBankAccounts && noBankAccounts.value === "True" && this.checked) {
+                event.preventDefault();
+                this.checked = false;
+
+                if (warningSpan) {
+                    warningSpan.classList.remove("d-none");
+                }
+                return;
+            }
+
+            if (warningSpan) {
+                warningSpan.classList.add("d-none");
+            }
 
             fetch("/autopay-rules/change", {
                 method: "POST",
@@ -20,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
             })
                 .then((response) => response.json())
                 .then(() => {
-                    window.location.href = "/autopay-rules";
+                    window.location.reload();
                 })
                 .catch((error) => {
                     console.error("Error:", error);

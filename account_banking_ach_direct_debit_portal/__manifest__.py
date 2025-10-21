@@ -18,6 +18,7 @@
         "data/payment_provider_data.xml",
         "security/portal_user_access.xml",
         "views/searchbar.xml",
+        "views/ach_settings.xml",
         "views/autopay_rules_templates.xml",
         "views/banks_templates.xml",
         "views/breadcrumbs.xml",
@@ -38,6 +39,10 @@
         "web.account_banking_ach_direct_debit_portal": [
             "account_banking_ach_direct_debit_portal/static/src/js/autopay_rules.js",
             "account_banking_ach_direct_debit_portal/static/src/js/invoice_table.js",
+            "account_banking_ach_direct_debit_portal/static/src/js/select_autopay_method.js",
+            "account_banking_ach_direct_debit_portal/static/src/js/select_bank_payment.js",
+            "account_banking_ach_direct_debit_portal/static/src/js/choose_autopay.js",
+            "account_banking_ach_direct_debit_portal/static/src/js/choose_specific_date.js",
         ],
         "web.plaid_public": [
             "account_banking_ach_direct_debit_portal/static/src/js/add_bank_form.js",

@@ -2,137 +2,239 @@
 <odoo>
     <template id="portal_autopay_rules">
         <t t-call="portal.portal_layout">
-            <t t-set="page_title" t-value="'Autopay Rules'" />
+            <t t-set="page_title" t-value="'Autopay Settings'" />
             <t t-set="additional_title"><t t-esc="page_title" /></t>
             <t t-set="breadcrumbs_searchbar" t-value="True" />
 
-            <div class="d-none d-md-block">
-                <t
-                    t-call="account_banking_ach_direct_debit_portal.debit_portal_searchbar"
+
+            <div id="autopay-settings" class="mt-3">
+                <div
+                    class="d-flex align-items-center justify-content-start text-gray cursor-pointer"
+                    onclick="window.history.back()"
                 >
-                    <t t-set="title">Autopay Rules</t>
+                    <i class="fa fa-arrow-left" aria-hidden="true" />
 
-                    <a href="/my/banks" class="btn btn-secondary">
-                        Manage bank accounts
-                    </a>
-                </t>
-            </div>
-
-            <div id="autopay-settings" class="mt-3 mt-lg-0">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div class="left-header">
-                        <h4 class="header-title mb-0 me-2">Autopay Rules</h4>
-
-                        <div class="d-md-none mt-2">
-                            <a href="/my/banks" class="btn btn-secondary">
-                                Manage bank accounts
-                            </a>
-                        </div>
-
-                        <div class="text-danger mt-sm-1">
-                            <i
-                                class="fa fa-exclamation-circle me-1"
-                            /> Bank authentication is required
-                        </div>
-                    </div>
-
-                    <div
-                        t-if="bank_account_total > 0"
-                        class="d-flex justify-content-end align-items-center mt-2 mt-md-0"
-                    >
-                        <label class="btn btn-toggle">
-                            Enable Autopay
-                            <input
-                                class="autopay-disable"
-                                name="autopay_rule"
-                                id="rule_disabled"
-                                value="disabled"
-                                t-att-checked="partner.autopay != 'disabled'"
-                                type="checkbox"
-                            />
-                            <span class="slider" />
-                        </label>
-                    </div>
+                    <span class="ms-1 pt-1">Back</span>
                 </div>
 
-                <t t-if="not bank_account_total">
-                    <p>
-                        Please add a bank account first.
-                    </p>
+                <h2 class="header-title mt-4">Settings</h2>
+
+                <div class="d-flex align-items-center justify-content-start mt-3">
+                    <span class="fs-16 text-gray">Turn on autopay?</span>
+
+                    <input
+                        type="hidden"
+                        name="no_bank_accounts"
+                        t-att-value="not bank_accounts"
+                    />
+
+                    <label class="btn btn-toggle">
+                        <input
+                            class="autopay-disable"
+                            name="autopay_rule"
+                            id="rule_disabled"
+                            value="disabled"
+                            t-att-checked="partner.autopay != 'disabled'"
+                            type="checkbox"
+                        />
+
+                        <span class="slider" />
+                    </label>
+                </div>
+
+                <t t-if="partner.autopay == 'disabled'">
+                    <span
+                        class="text-gray"
+                    >By signing up for autopay, you agree to the automatic payment.</span>
+                    <a
+                        class="blue-title text-decoration-underline cursor-pointer"
+                        data-bs-toggle="modal"
+                        data-bs-target="#termsModal"
+                    >
+                        Terms and Conditions.
+                    </a>
                 </t>
 
                 <div
-                    t-if="updated_autopay_rules"
-                    class="alert alert-success"
-                    role="alert"
+                    id="autopay-warning"
+                    class="d-none text-danger fs-12 fw-semibold mt-2"
+                >Add a bank account first.</div>
+
+                <div
+                    class="modal fade"
+                    id="termsModal"
+                    tabindex="-1"
+                    aria-labelledby="termsModalLabel"
+                    aria-hidden="true"
                 >
-                    Your changes have been saved.
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header border-bottom-0 pb-0">
+                                <button
+                                    type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                />
+                            </div>
+                            <div class="modal-body">
+                                <h3
+                                    class="mb-3"
+                                >Automatic Payment Terms and Conditions</h3>
+
+                                <p
+                                >By turning on autopay, you authorize Kencove Farm Fence, Inc. (“Kencove”) to electronically debit the bank account you select via the Automated Clearing House (ACH) network for payment of invoices and recurring charges. You understand that debits will occur automatically on each invoice due date.</p>
+                                <p
+                                >You may revoke this authorization at any time by disabling Autopay in your customer portal at least three (3) business days before a scheduled debit.</p>
+                                <p
+                                >You acknowledge that you are an authorized signer on the linked bank account and that you agree to the terms of this authorization. You will receive electronic confirmation of your enrollment, which serves as your copy of this authorization.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <t t-if="bank_account_total > 0 and partner.autopay != 'disabled'">
-                    <form method="post" action="/autopay-rules">
-                        <input
-                            type="hidden"
-                            name="csrf_token"
-                            t-att-value="request.csrf_token()"
-                        />
-
-                        <label class="rule-option" for="rule_1">
-                            <div
-                                class="d-flex justify-content-between align-items-center cursor-pointer w-100"
-                            >
-                                <div
-                                    class="d-flex justify-content-start align-items-center"
-                                >
-                                    <input
-                                        type="radio"
-                                        class="autopay-radio"
-                                        name="autopay_rule"
-                                        id="rule_1"
-                                        value="end_of_month"
-                                        t-att-checked="'end_of_month' == partner.autopay"
-                                    />
-                                    <span
-                                        class="ms-2"
-                                    >Number of days before month end</span>
-                                </div>
-
-                                <span
-                                    class="note text-muted"
-                                >5 days before month end ( Default )</span>
-                            </div>
-                        </label>
-
-                        <label class="rule-option" for="rule_2">
-                            <div
-                                class="d-flex justify-content-between align-items-center cursor-pointer w-100"
-                            >
-                                <div
-                                    class="d-flex justify-content-start align-items-center"
-                                >
-                                    <input
-                                        type="radio"
-                                        class="autopay-radio"
-                                        name="autopay_rule"
-                                        id="rule_2"
-                                        value="on_due_date"
-                                        t-att-checked="'on_due_date' == partner.autopay"
-                                    />
-                                    <span class="ms-2">On due date</span>
-                                </div>
-
-                                <span class="note text-muted">Current date: <t
-                                        t-esc="current_date"
-                                    /></span>
-                            </div>
-                        </label>
-
+                <t t-if="partner.autopay != 'disabled'">
+                    <div class="fs-16 text-gray mt-3">Autopay method</div>
+                    <div class="bank-dropdown mt-2" id="bankDropdown">
                         <div
-                            class="d-flex justify-content-end align-items-center w-100"
+                            class="bank-dropdown-toggle d-flex justify-content-between align-items-center"
                         >
-                            <button type="submit" class="btn btn-blue">Save</button>
+                            <div class="bank-info">
+                            <div
+                                    t-if="partner.autopay_method"
+                                    class="fw-semibold text-dark"
+                                >Bank Account ************<t
+                                        t-esc="partner.autopay_method.acc_number and partner.autopay_method.acc_number[-4:] or ''"
+                                    /></div>
+                            <div
+                                    t-if="partner.autopay_method"
+                                    class="text-gray fs-12"
+                                ><t
+                                        t-esc="partner.autopay_method.acc_holder_name"
+                                    /> | <t
+                                        t-esc="partner.autopay_method.bank_name"
+                                    /></div>
+                            </div>
+                            <i class="fa fa-chevron-down text-muted" />
                         </div>
-                    </form>
+
+                        <div class="bank-dropdown-menu d-none">
+                            <t t-foreach="bank_accounts" t-as="bank">
+                                <div t-att-id="bank.id" class="bank-option">
+                                    <div
+                                        class="fw-semibold text-dark"
+                                    >Bank Account ************<t
+                                            t-esc="bank.acc_number and bank.acc_number[-4:] or ''"
+                                        /></div>
+                                    <div class="text-gray fs-12"><t
+                                            t-esc="bank.acc_holder_name"
+                                        /> | <t t-esc="bank.bank_name" /></div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+
+
+                    <div class="fs-16 text-gray mt-3">Autopay date</div>
+                    <div
+                        class="text-gray"
+                    >If the payment date falls on a non-business day, payments are processed on the following business day.</div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="autopay-options">
+                                <label class="option-card d-flex align-items-start">
+                                    <input
+                                        type="radio"
+                                        name="autopay_schedule"
+                                        value="specific_date"
+                                        class="option-card-input"
+                                        t-att-checked="partner.autopay == 'specific_date'"
+                                    />
+                                    <span class="option-radio" aria-hidden="true" />
+
+                                    <div class="flex-grow-1">
+                                        <span class="option-content">
+                                            <span
+                                                class="option-title"
+                                            >Specific date</span>
+                                            <span
+                                                class="option-desc"
+                                            >Payments are processed on the same date every month.</span>
+                                        </span>
+
+                                        <div
+                                            id="extra-specific"
+                                            t-attf-class="option-extra mt-3 #{'' if partner.autopay == 'specific_date' else 'd-none'}"
+                                        >
+                                            <label
+                                                for="start-date"
+                                                class="text-gray"
+                                            >Starts on</label>
+
+                                            <input
+                                                type="date"
+                                                id="start-date"
+                                                class="form-control mt-1"
+                                                t-att-value="partner.autopay_specific_date or ''"
+                                            />
+
+                                            <div class="mt-2">
+                                                <i
+                                                    class="fa fa-refresh blue-title me-1"
+                                                    aria-hidden="true"
+                                                />
+                                                <span
+                                                    class="text-gray"
+                                                >Repeats every month on the <strong
+                                                        id="repeat-day"
+                                                    /></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12">
+                            <div class="autopay-options">
+                                <label class="option-card d-flex align-items-start">
+                                    <input
+                                        type="radio"
+                                        name="autopay_schedule"
+                                        value="on_due_date"
+                                        class="option-card-input"
+                                        t-att-checked="partner.autopay == 'on_due_date'"
+                                    />
+                                    <span class="option-radio" aria-hidden="true" />
+
+                                    <div class="flex-grow-1">
+                                        <span class="option-content">
+                                            <span class="option-title">Due date</span>
+                                            <span
+                                                class="option-desc"
+                                            >Payments are processed on the due date of each invoice.</span>
+                                        </span>
+
+                                        <div
+                                            t-if="next_due_date"
+                                            t-attf-class="option-extra mt-3 #{'' if partner.autopay == 'on_due_date' else 'd-none'}"
+                                        >
+                                            <label
+                                                for="start-date"
+                                                class="text-gray"
+                                            >Next due date</label>
+                                            <h4 class="blue-title">
+                                                <t
+                                                    t-esc="next_due_date.strftime('%-m/%-d/%y')"
+                                                />
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </t>
             </div>
 

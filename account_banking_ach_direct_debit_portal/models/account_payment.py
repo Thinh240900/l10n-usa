@@ -1,8 +1,7 @@
 import logging
+from calendar import monthrange
 from collections import defaultdict
 from datetime import timedelta
-
-from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
 
@@ -34,6 +33,34 @@ class AccountPayment(models.Model):
             )._origin
 
     @api.model
+    def _specific_date_should_run_today(self, partner, today):
+        start = partner.autopay_specific_date
+        if not start or today < start:
+            return False
+
+        scheduled_day = start.day
+
+        year, month = today.year, today.month
+        last_day_of_month = monthrange(year, month)[1]
+
+        run_day_this_month = min(scheduled_day, last_day_of_month)
+
+        return today.day == run_day_this_month
+
+    @api.model
+    def _specific_date_next_run_day_this_month(self, partner, any_date):
+        start = partner.autopay_specific_date
+        if not start:
+            return None
+
+        scheduled_day = start.day
+
+        year, month = any_date.year, any_date.month
+        last_day_of_month = monthrange(year, month)[1]
+
+        return min(scheduled_day, last_day_of_month)
+
+    @api.model
     def run_autopay_with_invoice_on_due_date(self):
         today = fields.Date.today()
         autopay = "on_due_date"
@@ -47,36 +74,43 @@ class AccountPayment(models.Model):
         self._process_autopay_partners(partners, today, autopay)
 
     @api.model
-    def run_autopay_with_invoice_end_of_month(self):
+    def run_autopay_with_invoice_specific_date(self):
         today = fields.Date.today()
-        end_of_month = today + relativedelta(day=31)
-        days_to_end_of_month = (end_of_month - today).days
-        autopay = "end_of_month"
-
-        if days_to_end_of_month != 5:
-            _logger.info(
-                f"Today is {today}, not 5 days before month end ({end_of_month}), skipping."
-            )
-            return
+        autopay = "specific_date"
 
         partners = self.env["res.partner"].search(
             [
-                ("autopay", "=", autopay),
+                ("autopay", "=", "specific_date"),
+                ("autopay_specific_date", "!=", False),
             ]
         )
 
-        self._process_autopay_partners(partners, today, autopay)
+        partners_to_run = partners.filtered(
+            lambda p: self._specific_date_should_run_today(p, today)
+        )
+
+        self._process_autopay_partners(partners_to_run, today, autopay)
 
     @api.model
     def send_email_autopay_reminders(self):
         today = fields.Date.today()
-        end_of_month = today + relativedelta(day=31)
-        days_to_end_of_month = (end_of_month - today).days
 
         self._process_autopay_reminders(today, "on_due_date")
 
-        if days_to_end_of_month == 10:
-            self._process_autopay_reminders(today, "end_of_month")
+        after_5_days = today + timedelta(days=5)
+        partners = self.env["res.partner"].search(
+            [
+                ("autopay", "=", "specific_date"),
+                ("autopay_specific_date", "!=", False),
+            ]
+        )
+        partners_due_in_5 = partners.filtered(
+            lambda p: self._specific_date_next_run_day_this_month(p, after_5_days)
+            == after_5_days.day
+            and after_5_days >= p.autopay_specific_date
+        )
+        if partners_due_in_5:
+            self._process_autopay_reminders(today, "specific_date")
 
     def _get_plaid_discount_percent(self):
         try:
@@ -112,7 +146,7 @@ class AccountPayment(models.Model):
                 continue
 
             invoice_date_due_operator = "="
-            if autopay == "end_of_month":
+            if autopay == "specific_date":
                 invoice_date_due_operator = "<="
 
             invoices = self.env["account.move"].search(
