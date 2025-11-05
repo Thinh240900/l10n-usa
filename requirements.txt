@@ -1,3 +1,4 @@
 # generated from manifests external_dependencies
 ach
+plaid-python
 python-stdnum

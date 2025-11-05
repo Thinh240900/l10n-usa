@@ -3,7 +3,9 @@
     <template id="portal_banks">
         <t t-call="portal.portal_layout">
             <t t-set="page_title" t-value="'My Banks'" />
-            <t t-set="additional_title"><t t-esc="page_title" /></t>
+            <t t-set="additional_title">
+                <t t-esc="page_title" />
+            </t>
             <t t-set="breadcrumbs_searchbar" t-value="True" />
 
             <div class="d-none d-lg-block">
@@ -17,12 +19,12 @@
             <div id="bank_accounts" class="mt-3 mt-lg-0">
                 <div t-if="add_success" class="alert alert-success" role="alert">
                     <strong
-                    >Bank Account Added</strong> — Your bank information has been securely saved.
+                >Bank Account Added</strong> — Your bank information has been securely saved.
                 </div>
 
                 <div t-if="edit_bank_success" class="alert alert-success" role="alert">
                     <strong
-                    >Bank Saved</strong> — Your bank account has been successfully saved to the portal.
+                >Bank Saved</strong> — Your bank account has been successfully saved to the portal.
                 </div>
 
                 <div
@@ -31,7 +33,7 @@
                     role="alert"
                 >
                     <strong
-                    >Bank Deleted</strong> — Your bank account has been successfully removed.
+                >Bank Deleted</strong> — Your bank account has been successfully removed.
                 </div>
 
                 <div
@@ -40,7 +42,7 @@
                     role="alert"
                 >
                     <strong
-                    >Bank Saved</strong> — Your default bank account has been successfully changed.
+                >Bank Saved</strong> — Your default bank account has been successfully changed.
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center w-100">
@@ -82,9 +84,15 @@
                                 class="d-flex justify-content-between align-items-center"
                             >
                                 <div class="bank-info">
-                                    <div><t t-esc="bank.acc_holder_name" /></div>
-                                    <div><t t-esc="bank.bank_name" /></div>
-                                    <div><t t-esc="bank.acc_number" /></div>
+                                    <div>
+                                        <t t-esc="bank.acc_holder_name" />
+                                    </div>
+                                    <div>
+                                        <t t-esc="bank.bank_name" />
+                                    </div>
+                                    <div>
+                                        <t t-esc="bank.acc_number" />
+                                    </div>
                                 </div>
 
                                 <div
@@ -172,61 +180,61 @@
                         t-att-value="request.csrf_token()"
                     />
                     <div class="form-grid">
-                      <div>
-                        <label>Account Holder Name</label>
-                        <input
+                        <div>
+                            <label>Account Holder Name</label>
+                            <input
                                 type="text"
                                 name="acc_holder_name"
                                 t-att-value="edit_mode and bank.acc_holder_name or ''"
                             />
-                      </div>
-                      <div>
-                        <label>Account Type</label>
-                        <select name="acc_type">
-                            <t t-foreach="acc_type_choices" t-as="choice">
-                                <option
+                        </div>
+                        <div>
+                            <label>Account Type</label>
+                            <select name="acc_type">
+                                <t t-foreach="acc_type_choices" t-as="choice">
+                                    <option
                                         t-att-value="choice[0]"
                                         t-att-selected="'selected' if edit_mode and choice[0] == bank.acc_type else None"
                                     >
-                                  <t t-esc="choice[1]" />
-                                </option>
-                              </t>
-                        </select>
-                      </div>
+                                        <t t-esc="choice[1]" />
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
 
-                      <div>
-                        <label>Routing Number</label>
-                        <input
+                        <div>
+                            <label>Routing Number</label>
+                            <input
                                 type="text"
                                 name="routing_number"
                                 t-att-value="edit_mode and bank.aba_routing or ''"
                             />
-                      </div>
-                      <div>
-                        <label>Account Number</label>
-                        <input
+                        </div>
+                        <div>
+                            <label>Account Number</label>
+                            <input
                                 type="text"
                                 name="acc_number"
                                 t-att-value="edit_mode and bank.acc_number or ''"
                             />
-                      </div>
+                        </div>
 
-                      <div>
-                        <label>Bank Name</label>
-                        <input
+                        <div>
+                            <label>Bank Name</label>
+                            <input
                                 type="text"
                                 name="bank_name"
                                 t-att-value="edit_mode and bank.bank_name or ''"
                             />
-                      </div>
-                      <div>
-                        <label>Bank Address</label>
-                        <input
+                        </div>
+                        <div>
+                            <label>Bank Address</label>
+                            <input
                                 type="text"
                                 name="bank_address"
                                 t-att-value="edit_mode and bank.bank_address or ''"
                             />
-                      </div>
+                        </div>
                     </div>
 
                     <div

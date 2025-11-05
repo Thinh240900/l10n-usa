@@ -64,7 +64,9 @@
                 border-radius: 8px;
                 cursor: pointer;
                 user-select: none;
-                transition: border-color 0.15s ease, box-shadow 0.15s ease,
+                transition:
+                    border-color 0.15s ease,
+                    box-shadow 0.15s ease,
                     background-color 0.15s ease;
 
                 &:hover {
@@ -87,7 +89,9 @@
                     border: 1.5px solid #c9c9c9;
                     border-radius: 50%;
                     background: #fff;
-                    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+                    transition:
+                        border-color 0.15s ease,
+                        box-shadow 0.15s ease;
                 }
 
                 .option-card-input:focus-visible + .option-radio {

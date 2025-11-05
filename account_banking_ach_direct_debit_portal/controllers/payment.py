@@ -10,7 +10,8 @@ from odoo.tools import float_is_zero
 
 from odoo.addons.payment import utils as payment_utils
 from odoo.addons.payment.controllers import portal as payment_portal
-from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager
+from odoo.addons.portal.controllers.portal import CustomerPortal
+from odoo.addons.portal.controllers.portal import pager as portal_pager
 
 from ..controllers.user_portal import UserPortalController as user_portal
 from ..utils import get_invoice_due_status
@@ -170,13 +171,11 @@ class PaymentController(CustomerPortal):
         for provider in providers_sudo:
             if invoices:
                 if provider.code == "authorize":
-                    provider_note[
-                        provider.id
-                    ] = f"{surcharge_percent:.4g}% Service Charge"  # noqa: E231
+                    provider_note[provider.id] = (
+                        f"{surcharge_percent:.4g}% Service Charge"  # noqa: E231
+                    )
                 elif provider.code == "ach_bank_account":
-                    provider_note[
-                        provider.id
-                    ] = f"{discount_percent:.4g}% Discount"  # noqa: B950,E231
+                    provider_note[provider.id] = f"{discount_percent:.4g}% Discount"  # noqa: B950,E231
 
         selected_payment_option_id = kw.get(
             "selected_payment_option_id",

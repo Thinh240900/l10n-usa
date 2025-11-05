@@ -369,12 +369,14 @@ ul.auto-toc {
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !! source digest: sha256:4bf77b7f11be502082229192cb2d6fcc460ca55fd853b74a3555626161262a90
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-<p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Beta" src="https://img.shields.io/badge/maturity-Beta-yellow.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/agpl-3.0-standalone.html"><img alt="License: AGPL-3" src="https://img.shields.io/badge/licence-AGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/OCA/l10n-usa/tree/16.0/account_banking_ach_direct_debit_portal"><img alt="OCA/l10n-usa" src="https://img.shields.io/badge/github-OCA%2Fl10n--usa-lightgray.png?logo=github" /></a> <a class="reference external image-reference" href="https://translation.odoo-community.org/projects/l10n-usa-16-0/l10n-usa-16-0-account_banking_ach_direct_debit_portal"><img alt="Translate me on Weblate" src="https://img.shields.io/badge/weblate-Translate%20me-F47D42.png" /></a> <a class="reference external image-reference" href="https://runboat.odoo-community.org/builds?repo=OCA/l10n-usa&amp;target_branch=16.0"><img alt="Try me on Runboat" src="https://img.shields.io/badge/runboat-Try%20me-875A7B.png" /></a></p>
-<p>This module extends the account_banking_ach_direct_debit functionality by providing a customer portal integration for collecting bank account information securely via Plaid.</p>
-<p>It enables customers to verify and link their bank accounts from the portal interface, allowing the company to later initiate ACH Direct Debit transactions from those accounts.</p>
-<div class="figure">
-<img alt="https://raw.githubusercontent.com/OCA/l10n-usa/16.0/account_banking_ach_direct_debit_portal/static/description/portal_homepage.png" src="https://raw.githubusercontent.com/OCA/l10n-usa/16.0/account_banking_ach_direct_debit_portal/static/description/portal_homepage.png" />
-</div>
+<p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Beta" src="https://img.shields.io/badge/maturity-Beta-yellow.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/agpl-3.0-standalone.html"><img alt="License: AGPL-3" src="https://img.shields.io/badge/licence-AGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/OCA/l10n-usa/tree/18.0/account_banking_ach_direct_debit_portal"><img alt="OCA/l10n-usa" src="https://img.shields.io/badge/github-OCA%2Fl10n--usa-lightgray.png?logo=github" /></a> <a class="reference external image-reference" href="https://translation.odoo-community.org/projects/l10n-usa-18-0/l10n-usa-18-0-account_banking_ach_direct_debit_portal"><img alt="Translate me on Weblate" src="https://img.shields.io/badge/weblate-Translate%20me-F47D42.png" /></a> <a class="reference external image-reference" href="https://runboat.odoo-community.org/builds?repo=OCA/l10n-usa&amp;target_branch=18.0"><img alt="Try me on Runboat" src="https://img.shields.io/badge/runboat-Try%20me-875A7B.png" /></a></p>
+<p>This module extends the account_banking_ach_direct_debit functionality
+by providing a customer portal integration for collecting bank account
+information securely via Plaid.</p>
+<p>It enables customers to verify and link their bank accounts from the
+portal interface, allowing the company to later initiate ACH Direct
+Debit transactions from those accounts.</p>
+<p><img alt="image1" src="https://raw.githubusercontent.com/OCA/l10n-usa/18.0/account_banking_ach_direct_debit_portal/static/description/portal_homepage.png" /></p>
 <p><strong>Table of contents</strong></p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
@@ -393,18 +395,21 @@ ul.auto-toc {
 <p>### Requirements</p>
 <ul class="simple">
 <li>A Plaid developer account</li>
-<li>Your <cite>client_id</cite> and <cite>secret</cite> from the Plaid dashboard</li>
+<li>Your client_id and secret from the Plaid dashboard</li>
 </ul>
 <p>### Configuration in Odoo</p>
 <p>To configure your Plaid credentials in Odoo:</p>
 <ol class="arabic">
 <li><p class="first">Go to <strong>Settings &gt; Invoicing &gt; Plaid</strong>.</p>
 </li>
-<li><p class="first">Update the following parameters:
-- <strong>Plaid Environment</strong>: Choose <cite>Sandbox</cite>, <cite>Development</cite>, or <cite>Production</cite>.
-- <strong>Client ID</strong>: Enter your Plaid <cite>client_id</cite>.
-- <strong>Secret</strong>: Enter your Plaid <cite>secret</cite>.</p>
-<p>Alternatively, you may use environment variables or a settings module if your Odoo deployment supports it.</p>
+<li><p class="first">Update the following parameters:</p>
+<ul class="simple">
+<li><strong>Plaid Environment</strong>: Choose Sandbox, Development, or Production.</li>
+<li><strong>Client ID</strong>: Enter your Plaid client_id.</li>
+<li><strong>Secret</strong>: Enter your Plaid secret.</li>
+</ul>
+<p>Alternatively, you may use environment variables or a settings module
+if your Odoo deployment supports it.</p>
 </li>
 </ol>
 </div>
@@ -413,7 +418,7 @@ ul.auto-toc {
 <p>Bugs are tracked on <a class="reference external" href="https://github.com/OCA/l10n-usa/issues">GitHub Issues</a>.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-<a class="reference external" href="https://github.com/OCA/l10n-usa/issues/new?body=module:%20account_banking_ach_direct_debit_portal%0Aversion:%2016.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**">feedback</a>.</p>
+<a class="reference external" href="https://github.com/OCA/l10n-usa/issues/new?body=module:%20account_banking_ach_direct_debit_portal%0Aversion:%2018.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**">feedback</a>.</p>
 <p>Do not contact contributors directly about support or help with technical issues.</p>
 </div>
 <div class="section" id="credits">
@@ -440,7 +445,7 @@ If you spotted it first, help us to smash it by providing a detailed and welcome
 <p>OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.</p>
-<p>This module is part of the <a class="reference external" href="https://github.com/OCA/l10n-usa/tree/16.0/account_banking_ach_direct_debit_portal">OCA/l10n-usa</a> project on GitHub.</p>
+<p>This module is part of the <a class="reference external" href="https://github.com/OCA/l10n-usa/tree/18.0/account_banking_ach_direct_debit_portal">OCA/l10n-usa</a> project on GitHub.</p>
 <p>You are welcome to contribute. To learn how please visit <a class="reference external" href="https://odoo-community.org/page/Contribute">https://odoo-community.org/page/Contribute</a>.</p>
 </div>
 </div>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo noupdate="1">
-
     <record id="payment_provider_ach_portal" model="payment.provider">
         <field name="code">ach_bank_account</field>
         <field name="name">ACH Bank Account</field>
@@ -17,5 +16,4 @@
         <field name="redirect_form_view_id" ref="redirect_form" />
         <field name="state">enabled</field>
     </record>
-
 </odoo>

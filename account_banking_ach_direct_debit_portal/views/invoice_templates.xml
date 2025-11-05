@@ -43,7 +43,9 @@
     <template id="portal_custom_my_invoices">
         <t t-call="portal.portal_layout">
             <t t-set="page_title" t-value="'My Invoices'" />
-            <t t-set="additional_title"><t t-esc="page_title" /></t>
+            <t t-set="additional_title">
+                <t t-esc="page_title" />
+            </t>
             <t t-set="breadcrumbs_searchbar" t-value="True" />
 
             <div id="invoices-list">
@@ -277,8 +279,8 @@
                                                 </div>
                                             </t>
                                             <div class="text-muted fs-12">(<t
-                                                    t-esc="invoice.invoice_date_due.strftime('%-m/%-d/%y')"
-                                                />)</div>
+                                                t-esc="invoice.invoice_date_due.strftime('%-m/%-d/%y')"
+                                            />)</div>
                                         </td>
                                         <td>
                                             <span
@@ -429,8 +431,8 @@
                                                     </div>
                                                 </t>
                                                 <div class="text-muted fs-12">(<t
-                                                        t-esc="invoice.invoice_date_due.strftime('%-m/%-d/%y')"
-                                                    />)</div>
+                                                    t-esc="invoice.invoice_date_due.strftime('%-m/%-d/%y')"
+                                                />)</div>
                                             </div>
                                         </td>
 
@@ -627,14 +629,18 @@
                                     t-if="invoice.invoice_user_id"
                                     class="list-group-item flex-grow-1"
                                 >
-                                    <div class="small mb-1"><strong class="text-muted">
-                                        <t t-if="invoice.move_type == 'out_invoice'">
+                                    <div class="small mb-1">
+                                        <strong class="text-muted">
+                                            <t
+                                                t-if="invoice.move_type == 'out_invoice'"
+                                            >
                                             Salesperson
                                         </t>
-                                        <t t-if="invoice.move_type == 'in_invoice'">
+                                            <t t-if="invoice.move_type == 'in_invoice'">
                                             Purchase Representative
                                         </t>
-                                    </strong></div>
+                                        </strong>
+                                    </div>
 
                                     <span
                                         t-field="invoice.invoice_user_id"
