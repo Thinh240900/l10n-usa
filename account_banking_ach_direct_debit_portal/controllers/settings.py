@@ -37,13 +37,16 @@ class SettingsController(CustomerPortal):
             ("invoice_date_due", ">=", today),
         ]
 
-        next_due_invoice = Invoice.search(domain, order="invoice_date_due asc", limit=1)
-        next_due_date = next_due_invoice.invoice_date_due if next_due_invoice else False
+        next_due_invoice = Invoice.read_group(
+            domain,
+            fields=["invoice_date_due:min"],
+            groupby=[]
+        )
+        next_due_date = next_due_invoice and next_due_invoice[0]["invoice_date_due"] or False
 
         credit_cards = PaymentToken.search(
             [
                 ("partner_id", "=", partner.id),
-                ("verified", "=", True),
                 ("active", "=", True),
             ]
         )

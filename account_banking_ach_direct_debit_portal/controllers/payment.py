@@ -20,22 +20,6 @@ _logger = logging.getLogger(__name__)
 
 
 class PaymentController(CustomerPortal):
-    def _get_invoices_domain(self):
-        return [
-            ("state", "not in", ("cancel", "draft")),
-            (
-                "move_type",
-                "in",
-                (
-                    "out_invoice",
-                    "out_refund",
-                    "in_invoice",
-                    "in_refund",
-                    "out_receipt",
-                    "in_receipt",
-                ),
-            ),
-        ]
 
     @http.route(
         ["/my/payments", "/my/payments/page/<int:page>"],
@@ -166,7 +150,7 @@ class PaymentController(CustomerPortal):
         provider_note = {}
 
         providers_sudo = providers_sudo.sorted(
-            key=lambda provider: provider.display_as or provider.name
+            key=lambda provider: provider.display_name or provider.name
         )
         for provider in providers_sudo:
             if invoices:
@@ -220,7 +204,6 @@ class PaymentController(CustomerPortal):
         partner_credit_cards = request.env["payment.token"].search(
             [
                 ("partner_id", "=", request.env.user.partner_id.id),
-                ("verified", "=", True),
                 ("active", "=", True),
             ]
         )
@@ -608,8 +591,8 @@ class PaymentPortal(payment_portal.PaymentPortal):
             )
         return super().payment_pay(*args, **kwargs)
 
-    def _get_custom_rendering_context_values(self, invoices=None, **kwargs):
-        rendering_context_values = super()._get_custom_rendering_context_values(
+    def _get_extra_payment_form_values(self, invoices=None, **kwargs):
+        rendering_context_values = super()._get_extra_payment_form_values(
             invoices=invoices, **kwargs
         )
         if invoices:
@@ -627,11 +610,16 @@ class PaymentPortal(payment_portal.PaymentPortal):
                     ),
                 )
             )
+            if references is not None and references[0]:
+                rendering_context_values.update(
+                    {
+                        "reference_prefix": ", ".join(references),
+                    }
+                )
             rendering_context_values.update(
                 {
                     "surcharge_amount": surcharge_amount,
                     "base_total_amount": base_total_amount,
-                    "reference_prefix": ", ".join(references),
                 }
             )
 
@@ -709,3 +697,10 @@ class PaymentPortal(payment_portal.PaymentPortal):
                 invoice.add_surcharge_line(surcharge_percent, invoice_surcharge)
 
             distributed_amount += invoice_surcharge
+
+    @staticmethod
+    def _validate_transaction_kwargs(kwargs, additional_allowed_keys=()):
+        return super(PaymentPortal, PaymentPortal)._validate_transaction_kwargs(
+            kwargs,
+            additional_allowed_keys+('invoices', 'surcharge_amount',)
+        )

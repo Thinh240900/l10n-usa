@@ -1,52 +1,24 @@
-document.addEventListener("DOMContentLoaded", function () {
-    "use strict";
+import { whenReady } from "@odoo/owl";
 
+whenReady(() => {
     const checkboxes = document.querySelectorAll(".invoice-checkbox");
     const payButton = document.querySelector(".pay-btn");
     const manageBankBtn = document.querySelector(".manage-bank-btn");
 
-    function updateActionVisibility() {
+    const updateActionVisibility = () => {
         const anyChecked = Array.from(checkboxes).some((cb) => cb.checked);
-        if (anyChecked) {
-            payButton.classList.remove("d-none");
+        payButton?.classList.toggle("d-none", !anyChecked);
+        manageBankBtn?.classList.toggle("d-none", anyChecked);
+    };
 
-            if (manageBankBtn) {
-                manageBankBtn.classList.add("d-none");
-            }
-        } else {
-            payButton.classList.add("d-none");
-
-            if (manageBankBtn) {
-                manageBankBtn.classList.remove("d-none");
-            }
-        }
-    }
-
-    if (checkboxes && payButton) {
-        checkboxes.forEach((cb) => {
-            cb.addEventListener("change", updateActionVisibility);
-        });
-
-        // Initial state
+    if (checkboxes.length && payButton) {
+        checkboxes.forEach((cb) => cb.addEventListener("change", updateActionVisibility));
         updateActionVisibility();
-
-        payButton.addEventListener("click", function () {
-            const selectedInvoices = [];
-            document
-                .querySelectorAll(".invoice-checkbox:checked")
-                .forEach(function (checkbox) {
-                    selectedInvoices.push(checkbox.value);
-                });
-
-            let url = "/select-payment-method";
-
-            if (selectedInvoices.length > 0) {
-                const query = selectedInvoices
-                    .map((id) => "invoice=" + encodeURIComponent(id))
-                    .join("&");
-                url += "?" + query;
-
-                window.location.href = url;
+        payButton.addEventListener("click", () => {
+            const ids = [...document.querySelectorAll(".invoice-checkbox:checked")].map(cb => cb.value);
+            if (ids.length) {
+                const query = ids.map(id => `invoice=${encodeURIComponent(id)}`).join("&");
+                window.location.href = `/select-payment-method?${query}`;
             }
         });
     }

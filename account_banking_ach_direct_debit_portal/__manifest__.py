@@ -4,7 +4,7 @@
 {
     "name": "Account Banking ACH Direct Debit Portal",
     "summary": "Account Banking ACH Direct Debit Portal",
-    "version": "16.0.1.0.0",
+    "version": "18.0.1.0.0",
     "license": "AGPL-3",
     "author": "Kencove, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/l10n-usa",
@@ -35,16 +35,14 @@
         "web.assets_frontend": [
             "account_banking_ach_direct_debit_portal/static/src/scss/*.scss",
             "account_banking_ach_direct_debit_portal/static/src/js/payment_form.js",
-        ],
-        "web.account_banking_ach_direct_debit_portal": [
-            "account_banking_ach_direct_debit_portal/static/src/js/autopay_rules.js",
             "account_banking_ach_direct_debit_portal/static/src/js/invoice_table.js",
+            "account_banking_ach_direct_debit_portal/static/src/js/autopay_rules.js",
             "account_banking_ach_direct_debit_portal/static/src/js/select_autopay_method.js",
             "account_banking_ach_direct_debit_portal/static/src/js/select_bank_payment.js",
             "account_banking_ach_direct_debit_portal/static/src/js/choose_autopay.js",
             "account_banking_ach_direct_debit_portal/static/src/js/choose_specific_date.js",
         ],
-        "web.plaid_public": [
+        "account_banking_ach_direct_debit_portal.plaid_public": [
             "account_banking_ach_direct_debit_portal/static/src/js/add_bank_form.js",
         ],
     },

@@ -13,22 +13,6 @@ from ..utils import get_invoice_due_status
 
 
 class HomepageController(CustomerPortal):
-    def _get_invoices_domain(self):
-        return [
-            ("state", "not in", ("cancel", "draft")),
-            (
-                "move_type",
-                "in",
-                (
-                    "out_invoice",
-                    "out_refund",
-                    "in_invoice",
-                    "in_refund",
-                    "out_receipt",
-                    "in_receipt",
-                ),
-            ),
-        ]
 
     @staticmethod
     def _get_invoice_searchbar_sortings():
@@ -102,7 +86,7 @@ class HomepageController(CustomerPortal):
             return None
 
         if partner.autopay == "on_due_date":
-            moves = partner.env["account.move"].search(
+            moves = partner.env["account.move"].search_fetch(
                 [
                     ("partner_id", "=", partner.id),
                     ("move_type", "=", "out_invoice"),
@@ -110,6 +94,7 @@ class HomepageController(CustomerPortal):
                     ("amount_residual", ">", 0),
                     ("invoice_date_due", ">=", today),
                 ],
+                ['invoice_date_due'],
                 order="invoice_date_due asc",
                 limit=1,
             )
@@ -164,19 +149,23 @@ class HomepageController(CustomerPortal):
 
         invoice_due_status_values = get_invoice_due_status(invoices)
 
-        due_invoices = request.env["account.move"].search(
-            [
+        groups = request.env["account.move"].read_group(
+            domain=[
                 ("partner_id", "=", partner.id),
                 ("move_type", "=", "out_invoice"),
                 ("state", "=", "posted"),
                 ("amount_residual", ">", 0),
-            ]
+            ],
+            fields=['amount_residual:sum', "invoice_date_due:max"],
+            groupby='partner_id'
         )
 
-        amount_due = sum(due_invoices.mapped("amount_residual"))
-        max_due_date = (
-            max(due_invoices.mapped("invoice_date_due")) if due_invoices else None
-        )
+        if groups:
+            amount_due = groups[0]["amount_residual"]
+            max_due_date = groups[0]["invoice_date_due"]
+        else:
+            amount_due = 0.0
+            max_due_date = None
 
         credit_limit = partner.credit_limit or 0.0
 

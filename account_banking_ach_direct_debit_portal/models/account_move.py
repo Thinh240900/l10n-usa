@@ -56,7 +56,7 @@ class AccountMove(models.Model):
         ):
             return
 
-        self.write(
+        self.with_context(skip_readonly_check=True).write(
             {
                 "invoice_line_ids": [
                     Command.create(

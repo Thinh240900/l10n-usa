@@ -85,7 +85,7 @@ class InvoiceController(PortalAccount):
                         limit=self._items_per_page,
                         offset=pager_offset,
                     )
-                    if AccountInvoice.check_access_rights("read", raise_exception=False)
+                    if AccountInvoice.check_access("read")
                     else AccountInvoice
                 ),
                 "page_name": "invoice",
@@ -97,7 +97,7 @@ class InvoiceController(PortalAccount):
                         "sortby": sortby,
                     },
                     "total": AccountInvoice.search_count(domain)
-                    if AccountInvoice.check_access_rights("read", raise_exception=False)
+                    if AccountInvoice.check_access("read")
                     else 0,
                     "page": page,
                     "step": self._items_per_page,

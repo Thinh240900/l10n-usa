@@ -38,7 +38,7 @@ class ResConfigSettings(models.TransientModel):
     surcharge_account_id = fields.Many2one(
         "account.account",
         string="Surcharge Account",
-        domain="[('deprecated', '=', False), ('company_id', '=', company_id)]",
+        domain="[('deprecated', '=', False), ('company_ids', '=', company_id)]",
         help="Account to use for credit card surcharges.",
         related="company_id.surcharge_account_id",
         readonly=False,
@@ -46,7 +46,7 @@ class ResConfigSettings(models.TransientModel):
     discount_account_id = fields.Many2one(
         "account.account",
         string="Discount Account",
-        domain="[('deprecated', '=', False), ('company_id', '=', company_id)]",
+        domain="[('deprecated', '=', False), ('company_ids', '=', company_id)]",
         help="Account to use for plaid discount.",
         related="company_id.discount_account_id",
         readonly=False,

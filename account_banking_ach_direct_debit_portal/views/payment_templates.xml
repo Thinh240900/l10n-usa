@@ -286,7 +286,7 @@
                                                             <td>
                                                                 <div
                                                                     class="payment_option_name"
-                                                                    t-esc="provider.display_as or provider.name"
+                                                                    t-esc="provider.display_name or provider.name"
                                                                 />
                                                             </td>
                                                         </tr>
@@ -507,7 +507,6 @@
                 </form>
             </div>
 
-            <t t-call-assets="web.account_banking_ach_direct_debit_portal" />
 
             <script>
                 document.addEventListener('change', function (e) {

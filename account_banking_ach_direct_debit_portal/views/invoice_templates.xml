@@ -14,6 +14,7 @@
                     <button
                         id="portal_searchbar_filters"
                         data-bs-toggle="dropdown"
+                        type="button"
                         class="btn btn-secondary dropdown-toggle"
                     >
                         <t
@@ -82,6 +83,7 @@
                             <button
                                 id="portal_searchbar_sortby"
                                 data-bs-toggle="dropdown"
+                                type="button"
                                 class="btn btn-secondary dropdown-toggle"
                             >
                                 <t
@@ -112,6 +114,7 @@
                             <button
                                 id="invoice_status_filter"
                                 data-bs-toggle="dropdown"
+                                type="button"
                                 class="btn btn-secondary dropdown-toggle"
                             >
                                 <t
@@ -471,8 +474,6 @@
                     </div>
                 </t>
             </div>
-
-            <t t-call-assets="web.account_banking_ach_direct_debit_portal" />
         </t>
     </template>
 
