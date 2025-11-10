@@ -12,7 +12,8 @@ class AccountPaymentTerm(models.Model):
         string="ACH Payment Discount Rules",
     )
 
-    def _get_ach_rule_base_date(self, rule, invoice):
+    @staticmethod
+    def _get_ach_rule_base_date(rule, invoice):
         if rule.based_on == "ship_date":
             sale_orders = invoice.invoice_line_ids.mapped(
                 "sale_line_ids.order_id"

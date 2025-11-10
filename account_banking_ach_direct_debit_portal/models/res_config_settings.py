@@ -38,7 +38,7 @@ class ResConfigSettings(models.TransientModel):
     surcharge_account_id = fields.Many2one(
         "account.account",
         string="Surcharge Account",
-        domain="[('deprecated', '=', False), ('company_id', '=', company_id)]",
+        domain="[('deprecated', '=', False), ('company_ids', '=', company_id)]",
         help="Account to use for credit card surcharges.",
         related="company_id.surcharge_account_id",
         readonly=False,
@@ -46,7 +46,7 @@ class ResConfigSettings(models.TransientModel):
     discount_account_id = fields.Many2one(
         "account.account",
         string="Discount Account",
-        domain="[('deprecated', '=', False), ('company_id', '=', company_id)]",
+        domain="[('deprecated', '=', False), ('company_ids', '=', company_id)]",
         help="Account to use for plaid discount.",
         related="company_id.discount_account_id",
         readonly=False,
@@ -54,7 +54,7 @@ class ResConfigSettings(models.TransientModel):
     charge_account_id = fields.Many2one(
         "account.account",
         string="Charge Account",
-        domain="[('deprecated', '=', False), ('company_id', '=', company_id)]",
+        domain="[('deprecated', '=', False), ('company_ids', '=', company_id)]",
         help="Account to use for plaid charge.",
         related="company_id.charge_account_id",
         readonly=False,
@@ -70,7 +70,8 @@ class ResConfigSettings(models.TransientModel):
         config_parameter="account_banking_ach_direct_debit_portal.enable_portal",
         help="Controls who can access the ACH Payment Portal features:\n"
         "- Disabled: Hide all ACH portal features\n"
-        "- Selected Users Only: Show to users with 'Enable ACH Payment Portal' enabled\n"
+        "- Selected Users Only: Show to users "
+        "with 'Enable ACH Payment Portal' enabled\n"
         "- All Portal Users: Enable ACH features for all portal users",
     )
     discount_journal_id = fields.Many2one(

@@ -86,7 +86,9 @@ class AutoPayRulesController(CustomerPortal):
             ("invoice_date_due", ">=", today),
         ]
 
-        next_due_invoice = Invoice.search(domain, order="invoice_date_due asc", limit=1)
+        next_due_invoice = Invoice.search_fetch(
+            domain, ["invoice_date_due"], order="invoice_date_due asc", limit=1
+        )
         next_due_date = next_due_invoice.invoice_date_due if next_due_invoice else False
 
         next_date_end_of_month = get_date_5days_before_end_of_month(today)

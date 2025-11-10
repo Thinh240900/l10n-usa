@@ -100,7 +100,7 @@ class BankController(CustomerPortal):
             "account_banking_ach_direct_debit_portal.add_bank", values
         )
 
-    @http.route("/my/banks/verify_submit", type="json", auth="user", csrf=False)
+    @http.route("/my/banks/verify_submit", type="json", auth="user", csrf=True)
     def plaid_verify_submit(self):
         partner_id = request.env.user.partner_id.id
 

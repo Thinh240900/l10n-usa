@@ -57,7 +57,8 @@ class StatisticsController(CustomerPortal):
                             JOIN account_move_line payment_aml
                                 ON payment_aml.id =
                                    CASE
-                                       WHEN apr.debit_move_id = aml.id THEN apr.credit_move_id
+                                       WHEN apr.debit_move_id = aml.id
+                                       THEN apr.credit_move_id
                                        ELSE apr.debit_move_id
                                    END
                             JOIN account_payment ap
@@ -130,7 +131,8 @@ class StatisticsController(CustomerPortal):
                         JOIN account_move_line payment_aml
                             ON payment_aml.id =
                                CASE
-                                   WHEN apr.debit_move_id = aml.id THEN apr.credit_move_id
+                                   WHEN apr.debit_move_id = aml.id
+                                   THEN apr.credit_move_id
                                    ELSE apr.debit_move_id
                                END
                         JOIN account_payment ap

@@ -7,6 +7,7 @@
                 <t t-esc="page_title" />
             </t>
             <t t-set="breadcrumbs_searchbar" t-value="True" />
+            <t t-call-assets="web.assets_frontend" />
 
             <div id="autopay-settings" class="mt-3">
                 <a
@@ -39,6 +40,11 @@
                 />
 
                 <form action="/autopay-rules/change" method="post">
+                    <input
+                        type="hidden"
+                        name="csrf_token"
+                        t-att-value="request.csrf_token()"
+                    />
                     <div class="d-flex align-items-center justify-content-start mt-3">
                         <span class="fs-16 text-gray">Turn on autopay?</span>
 
@@ -360,8 +366,6 @@
                     </div>
                 </form>
             </div>
-
-            <t t-call-assets="web.account_banking_ach_direct_debit_portal" />
         </t>
     </template>
 </odoo>

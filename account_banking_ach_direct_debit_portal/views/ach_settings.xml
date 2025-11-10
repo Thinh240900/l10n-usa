@@ -7,7 +7,7 @@
                 <t t-esc="page_title" />
             </t>
             <t t-set="breadcrumbs_searchbar" t-value="True" />
-
+            <t t-call-assets="web.assets_frontend" />
             <div id="ach-settings" class="container my-0 my-lg-4">
                 <a
                     class="d-flex align-items-center justify-content-start text-gray cursor-pointer"
@@ -505,8 +505,6 @@
                     </form>
                 </div>
             </div>
-
-            <t t-call-assets="web.account_banking_ach_direct_debit_portal" />
         </t>
     </template>
 </odoo>

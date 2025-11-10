@@ -1,6 +1,6 @@
 import logging
 
-from odoo import Command, _, fields, models
+from odoo import Command, fields, models
 from odoo.tools import float_is_zero
 
 _logger = logging.getLogger(__name__)
@@ -33,18 +33,19 @@ class AccountMove(models.Model):
         bank_journal = (
             self.env["account.journal"]
             .sudo()
-            .search(
+            .search_fetch(
                 [
                     ("company_id", "=", self.company_id.id),
                     ("type", "=", "bank"),
                 ],
+                ["type", "company_id", "id"],
                 limit=1,
             )
         )
 
         payment_method_line = bank_journal._get_available_payment_method_lines(
             "inbound"
-        ).filtered(lambda l: l.code == "ACH-In")
+        ).filtered(lambda line: line.code == "ACH-In")
         if not payment_method_line:
             return {}
 
@@ -75,12 +76,12 @@ class AccountMove(models.Model):
         ):
             return
 
-        self.write(
+        self.with_context(skip_readonly_check=True).write(
             {
                 "invoice_line_ids": [
                     Command.create(
                         {
-                            "name": _(
+                            "name": self.env._(
                                 "%.4g%% Credit Card Surcharge" % surcharge_percent
                             ),
                             "quantity": 1,
@@ -120,7 +121,7 @@ class AccountMove(models.Model):
                 "invoice_line_ids": [
                     Command.create(
                         {
-                            "name": _(
+                            "name": self.env._(
                                 f"Charge {ach_rule.amount:.4g}{unit} for {self.name}",  # noqa: E231,B950
                             ),
                             "quantity": 1,
@@ -178,7 +179,8 @@ class AccountMove(models.Model):
             return
 
         receivable_lines = self.line_ids.filtered(
-            lambda l: l.partner_id and l.account_id.account_type == "asset_receivable"
+            lambda line: line.partner_id
+            and line.account_id.account_type == "asset_receivable"
         )
         receivable_account = (
             receivable_lines[0].account_id
@@ -187,7 +189,8 @@ class AccountMove(models.Model):
         )
         if not receivable_account:
             _logger.warning(
-                f"No receivable account found on invoice {self.name}. Skipping discount."
+                f"No receivable account found on "
+                f"invoice {self.name}. Skipping discount."
             )
             return
 
@@ -203,14 +206,15 @@ class AccountMove(models.Model):
                 {
                     "journal_id": misc_journal.id,
                     "date": fields.Date.today(),
-                    "ref": _(
+                    "ref": self.env._(
                         f"Discount {ach_rule.amount:.4g}{unit} for invoice: {self.name}"  # noqa: E231,B950
                     ),
                     "line_ids": [
                         Command.create(
                             {
-                                "name": _(
-                                    f"Discount {ach_rule.amount:.4g}{unit} for {self.name}"  # noqa: E231,B950
+                                "name": self.env._(
+                                    f"Discount {ach_rule.amount:.4g}{unit} "
+                                    f"for {self.name}"  # noqa: E231,B950
                                 ),
                                 "account_id": discount_account.id,
                                 "debit": discount_amount,
@@ -220,8 +224,9 @@ class AccountMove(models.Model):
                         ),
                         Command.create(
                             {
-                                "name": _(
-                                    f"Discount {ach_rule.amount:.4g}{unit} adjustment for {self.name}"  # noqa: E231,B950
+                                "name": self.env._(
+                                    f"Discount {ach_rule.amount:.4g}{unit} "
+                                    f"adjustment for {self.name}"  # noqa: E231,B950
                                 ),
                                 "account_id": receivable_account.id,
                                 "debit": 0.0,
@@ -238,10 +243,11 @@ class AccountMove(models.Model):
         # Reconcile lines: find lines on invoice and journal entry to reconcile
         # Outstanding receivable lines of invoice + credit lines of journal entry
         to_reconcile_lines = (self.line_ids + misc_move.line_ids).filtered(
-            lambda l: l.account_id == receivable_account and not l.reconciled
+            lambda line: line.account_id == receivable_account and not line.reconciled
         )
         if to_reconcile_lines:
             to_reconcile_lines.reconcile()
             _logger.info(
-                f"Discount journal move ({discount_amount}) created & reconciled with invoice {self.name}"  # noqa: E231,B950
+                f"Discount journal move ({discount_amount}) created & reconciled "
+                f"with invoice {self.name}"  # noqa: E231,B950
             )

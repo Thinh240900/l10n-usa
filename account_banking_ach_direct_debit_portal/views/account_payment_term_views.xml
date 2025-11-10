@@ -7,7 +7,7 @@
             <xpath expr="//sheet" position="inside">
                 <separator string="ACH Payment Discount Rule" />
                 <field name="ach_rule_ids">
-                    <tree
+                    <list
                         editable="bottom"
                         no_open="True"
                         default_order="sequence asc, id asc"
@@ -19,7 +19,7 @@
                         <field name="discount_or_charge" />
                         <field name="amount_type" />
                         <field name="amount" />
-                    </tree>
+                    </list>
                 </field>
             </xpath>
         </field>

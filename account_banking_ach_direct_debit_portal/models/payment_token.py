@@ -21,12 +21,11 @@ class PaymentToken(models.Model):
         return res
 
     def unlink(self):
-        res = False
-
+        res = True
         for token in self:
             partner = token.partner_id
             is_default = token.default
-            res &= super(PaymentToken, token).unlink()
+            res &= super().unlink()
 
             if is_default and partner:
                 remaining_tokens = self.search(

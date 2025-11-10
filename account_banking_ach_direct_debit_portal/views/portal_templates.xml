@@ -15,26 +15,24 @@
         priority="10"
     >
         <xpath
-            expr="//t[@t-set='title' and normalize-space(text())='Invoices &amp; Bills']/following-sibling::t[@t-set='url']"
+            expr="//t[@t-set='title' and normalize-space(text())='Your Invoices']/following-sibling::t[@t-set='url']"
             position="attributes"
         >
             <attribute name="t-value">'/my/payment-account'</attribute>
         </xpath>
     </template>
 
-    <template id="checkout_inherit" inherit_id="payment.checkout">
-        <xpath expr="//form/t[@t-call='{{footer_template_id}}']" position="before">
+    <template id="checkout_inherit" inherit_id="payment.form">
+        <xpath expr="//form/div/t[@t-call='payment.submit_button']" position="before">
             <t t-if="request.httprequest.path == '/payment/pay'">
-                <div class="float-start mt-2">
-                    <button
-                        t-if="request.httprequest.path == '/payment/pay'"
-                        type="button"
-                        class="btn btn-light border btn-lg mb8 mt8"
-                        onclick="window.history.back()"
-                    >
+                <button
+                    t-if="request.httprequest.path == '/payment/pay'"
+                    type="button"
+                    class="btn btn-light border btn-lg "
+                    onclick="window.history.back()"
+                >
                         <i class="fa fa-angle-left me-1" />Back
                     </button>
-                </div>
             </t>
         </xpath>
     </template>
@@ -59,13 +57,6 @@
                 </a>
             </div>
         </xpath>
-
-        <xpath
-            expr="//div[@id='modalaccept']//div[contains(@class,'alert') and contains(@class,'alert-warning')]"
-            position="replace"
-        >
-            <t />
-        </xpath>
     </template>
 
     <template
@@ -73,11 +64,11 @@
         inherit_id="portal.record_pager"
         name="Portal Record Pager with Text"
     >
-        <xpath expr="//i[@class='fa fa-chevron-left']" position="after">
+        <xpath expr="//i[@class='oi oi-chevron-left']" position="after">
             <span class="text-accent-gray ms-1">Previous</span>
         </xpath>
 
-        <xpath expr="//i[@class='fa fa-chevron-right']" position="before">
+        <xpath expr="//i[@class='oi oi-chevron-right']" position="before">
             <span class="text-gray me-1">Next</span>
         </xpath>
     </template>

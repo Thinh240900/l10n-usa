@@ -7,8 +7,8 @@ class ResPartnerBank(models.Model):
     bank_address = fields.Char(related="bank_id.street", readonly=False)
     verified = fields.Boolean(default=False)
     default = fields.Boolean(default=False)
-    plaid_access_token = fields.Char(readonly=True)
-    plaid_account_id = fields.Char(readonly=True)
+    plaid_access_token = fields.Char(readonly=False)
+    plaid_account_id = fields.Char(readonly=False)
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -25,12 +25,11 @@ class ResPartnerBank(models.Model):
         return res
 
     def unlink(self):
-        res = False
-
+        res = True
         for bank in self:
             partner = bank.partner_id
             is_default = bank.default
-            res &= super(ResPartnerBank, bank).unlink()
+            res &= super().unlink()
 
             if is_default and partner:
                 remaining_banks = self.search(

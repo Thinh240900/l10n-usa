@@ -49,9 +49,9 @@
                                 <tr>
                                     <td style="font-size: 15px; padding: 1rem 0.75rem;">
                                         <i
-                                            class="fa fa-files-o me-2 blue-title"
-                                            style="font-size: 16px;"
-                                        />
+                                        class="fa fa-files-o me-2 blue-title"
+                                        style="font-size: 16px;"
+                                    />
                                         Number of invoices
                                     </td>
                                     <td class="text-end" style="padding: 1rem 0.75rem;">
@@ -74,9 +74,9 @@
                                 <tr>
                                     <td style="font-size: 15px; padding: 1rem 0.75rem;">
                                         <i
-                                            class="fa fa-credit-card me-2 blue-title"
-                                            style="font-size: 16px;"
-                                        />
+                                        class="fa fa-credit-card me-2 blue-title"
+                                        style="font-size: 16px;"
+                                    />
                                         Number of invoices paid by CC
                                     </td>
                                     <td class="text-end" style="padding: 1rem 0.75rem;">
@@ -99,9 +99,9 @@
                                 <tr>
                                     <td style="font-size: 15px; padding: 1rem 0.75rem;">
                                         <i
-                                            class="fa fa-university me-2 blue-title"
-                                            style="font-size: 16px;"
-                                        />
+                                        class="fa fa-university me-2 blue-title"
+                                        style="font-size: 16px;"
+                                    />
                                         Number of invoices paid by ACH Payment
                                     </td>
                                     <td class="text-end" style="padding: 1rem 0.75rem;">

@@ -16,8 +16,8 @@ class AccountPaymentRegister(models.TransientModel):
         except (TypeError, ValueError, OverflowError):
             return None
 
-    def _get_additional_link_values(self):
-        values = super()._get_additional_link_values()
+    def _prepare_query_params(self, related_document):
+        values = super()._prepare_query_params(related_document)
 
         if self.res_model == "account.move":
             surcharge_percent = self._get_surcharge_percent()
@@ -30,9 +30,9 @@ class AccountPaymentRegister(models.TransientModel):
                     "amount": self.amount + surcharge_amount,
                     "surcharge_amount": surcharge_amount,
                     "base_total_amount": self.amount,
+                    "invoice": self.res_id,
                 }
 
-                values["invoice"] = self.res_id
                 del values["invoice_id"]
 
         return values

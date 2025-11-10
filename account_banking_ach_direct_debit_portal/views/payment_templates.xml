@@ -137,6 +137,8 @@
             </t>
             <t t-set="breadcrumbs_searchbar" t-value="True" />
 
+            <t t-call-assets="web.assets_frontend" />
+
             <div id="payment" class="container my-0 my-lg-4">
                 <form
                     t-att-action="make_payment_url"
@@ -286,7 +288,7 @@
                                                             <td>
                                                                 <div
                                                                     class="payment_option_name"
-                                                                    t-esc="provider.display_as or provider.name"
+                                                                    t-esc="provider.display_name or provider.name"
                                                                 />
                                                             </td>
                                                         </tr>
@@ -337,7 +339,7 @@
                                                 ><t
                                                     t-esc="partner_bank_default.acc_holder_name"
                                                 /> | <t
-                                                    t-esc="partner_bank_default.bank_name"
+                                                    t-esc="partner_bank_default.bank_id.name"
                                                 /></div>
                                             </div>
                                             <i class="fa fa-chevron-down text-muted" />
@@ -358,7 +360,7 @@
                                                     <div class="text-gray fs-12"><t
                                                         t-esc="bank.acc_holder_name"
                                                     /> | <t
-                                                        t-esc="bank.bank_name"
+                                                        t-esc="bank.bank_id.name"
                                                     /></div>
 
                                                     <i
@@ -383,7 +385,7 @@
                                     >Added account</div>
 
                                     <div
-                                        id="bankPaymentDropdown"
+                                        id="creditCardPaymentDropdown"
                                         class="bank-dropdown mt-2"
                                     >
                                         <input
@@ -520,8 +522,6 @@
                     </div>
                 </form>
             </div>
-
-            <t t-call-assets="web.account_banking_ach_direct_debit_portal" />
 
             <script>
                 document.addEventListener('change', function (e) {

@@ -30,16 +30,18 @@ class ResCompany(models.Model):
     )
 
     def _get_default_surcharge_discount_account(self):
-        invoice_journal = self.env["account.journal"].search(
-            [("type", "=", "sale"), ("company_id", "=", self.id)], limit=1
+        invoice_journal = self.env["account.journal"].search_fetch(
+            [("type", "=", "sale"), ("company_id", "=", self.id)],
+            ["type", "default_account_id"],
+            limit=1,
         )
         if invoice_journal and invoice_journal.default_account_id:
             return invoice_journal.default_account_id
         return False
 
     def _get_default_discount_journal(self):
-        general_journal = self.env["account.journal"].search(
-            [("type", "=", ("general")), ("company_id", "=", self.id)]
+        general_journal = self.env["account.journal"].search_fetch(
+            [("type", "=", "general"), ("company_id", "=", self.id)], ["type", "code"]
         )
         if len(general_journal) > 1:
             general_journal = general_journal.filtered(lambda j: j.code == "MISC")[:1]

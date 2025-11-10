@@ -1,25 +1,19 @@
-odoo.define("account_banking_ach_direct_debit_portal.payment_form", (require) => {
-    "use strict";
+import {patch} from "@web/core/utils/patch";
+import PaymentForm from "@payment/js/payment_form";
 
-    const checkoutForm = require("payment.checkout_form");
-    const manageForm = require("payment.manage_form");
-
-    const PaymentMixin = {
-        // eslint-disable-next-line no-unused-vars
-        _prepareTransactionRouteParams: function (code, paymentOptionId, flow) {
-            const transactionRouteParams = this._super(...arguments);
-            return {
-                ...transactionRouteParams,
-                invoices: Array.isArray(this.txContext.invoices)
-                    ? this.txContext.invoices
-                    : [],
-                surcharge_amount: parseFloat(this.txContext.surchargeAmount)
-                    ? this.txContext.surchargeAmount
-                    : 0.0,
-            };
-        },
-    };
-
-    checkoutForm.include(PaymentMixin);
-    manageForm.include(PaymentMixin);
+patch(PaymentForm.prototype, {
+    _prepareTransactionRouteParams() {
+        const transactionRouteParams = super._prepareTransactionRouteParams(
+            ...arguments
+        );
+        transactionRouteParams.invoices = JSON.parse(
+            this.paymentContext.invoices || "[]"
+        );
+        transactionRouteParams.surcharge_amount = parseFloat(
+            this.paymentContext.surchargeAmount
+        )
+            ? this.paymentContext.surchargeAmount
+            : 0.0;
+        return transactionRouteParams;
+    },
 });

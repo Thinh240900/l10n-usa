@@ -1,11 +1,19 @@
 document.addEventListener("DOMContentLoaded", function () {
     "use strict";
 
+    console.log("[Autopay Rules] Initializing...");
+
     const checkbox = document.getElementById("rule_disabled");
     const oldRuleInput = document.querySelector("input[name='old_autopay_rule']");
+    console.log("[Autopay Rules] Found elements:", {
+        checkbox: Boolean(checkbox),
+        oldRuleInput: Boolean(oldRuleInput),
+    });
 
     if (checkbox) {
         checkbox.addEventListener("change", function (event) {
+            console.log("[Autopay Rules] Toggle changed:", this.checked);
+
             const noBankAccounts = document.querySelector("[name='no_bank_accounts']");
             const warningSpan = document.getElementById("autopay-warning");
             const termsAndConditions = document.getElementById("terms-and-conditions");

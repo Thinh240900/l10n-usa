@@ -279,7 +279,11 @@
 
             <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js" />
 
-            <t t-call-assets="web.plaid_public" />
+            <t t-call-assets="web.assets_frontend" />
+            <t
+                t-call-assets="account_banking_ach_direct_debit_portal.plaid_public"
+                t-js="true"
+            />
         </t>
     </template>
 </odoo>

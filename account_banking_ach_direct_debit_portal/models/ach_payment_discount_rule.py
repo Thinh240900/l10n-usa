@@ -52,5 +52,6 @@ class AchPaymentDiscountRule(models.Model):
     )
     amount = fields.Float(
         required=True,
-        help="If percentage, enter percent (e.g. 1 = 1%). If fixed, enter currency amount.",
+        help="If percentage, enter percent (e.g. 1 = 1%). "
+        "If fixed, enter currency amount.",
     )

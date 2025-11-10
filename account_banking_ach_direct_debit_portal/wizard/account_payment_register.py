@@ -22,7 +22,8 @@ class AccountPaymentRegister(models.TransientModel):
     def _compute_available_contact_bank_ids(self):
         for wizard in self:
             wizard.available_contact_bank_ids = wizard.partner_id.bank_ids.filtered(
-                lambda x: x.company_id.id in (False, wizard.company_id.id)
+                lambda x, wizard_company=wizard.company_id.id: x.company_id.id
+                in (False, wizard_company)
             )._origin
 
     def _create_payment_vals_from_wizard(self, batch_result):

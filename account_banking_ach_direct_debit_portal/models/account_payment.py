@@ -29,7 +29,8 @@ class AccountPayment(models.Model):
     def _compute_available_contact_bank_ids(self):
         for pay in self:
             pay.available_contact_bank_ids = pay.partner_id.bank_ids.filtered(
-                lambda x: x.company_id.id in (False, pay.company_id.id)
+                lambda x, pay_company=pay.company_id.id: x.company_id.id
+                in (False, pay_company)
             )._origin
 
     @api.model
@@ -101,7 +102,8 @@ class AccountPayment(models.Model):
 
             if days_to_end_of_month != 5:
                 _logger.info(
-                    f"Today is {today}, not 5 days before month end ({end_of_month}), skipping."
+                    f"Today is {today}, "
+                    f"not 5 days before month end ({end_of_month}), skipping."
                 )
                 return
 
@@ -186,7 +188,8 @@ class AccountPayment(models.Model):
         ) in ["1", "True", "true"] and days_to_end_of_month == 10:
             self._process_autopay_reminders(today, "end_of_month")
 
-    def _exclude_authorize_invoice_domain(self):
+    @staticmethod
+    def _exclude_authorize_invoice_domain():
         return [
             "|",
             ("payment_mode_id", "=", False),
@@ -233,6 +236,7 @@ class AccountPayment(models.Model):
             for invoice in invoices_to_process:
                 discount_amount = 0
                 charge_amount = 0
+                pay_amount = invoice.amount_residual
 
                 adj_amount, rule = invoice._compute_ach_adjustment(today)
 
@@ -269,7 +273,8 @@ class AccountPayment(models.Model):
 
                 if is_success:
                     invoice.message_post(
-                        body=f"Autopay created successfully for invoice <b>{invoice.name}</b>."
+                        body=f"Autopay created successfully for "
+                        f"invoice <b>{invoice.name}</b>."
                     )
                     if rule and discount_amount > 0.0:
                         invoice._create_discount_entry_and_reconcile(
@@ -311,19 +316,21 @@ class AccountPayment(models.Model):
                 ("payment_state", "!=", "paid"),
                 ("partner_id.autopay", "=", autopay),
                 ("amount_residual", ">", 0.0),
-                *(self._ach_invoice_domain()),
             ]
         )
 
         partners = invoices.mapped("partner_id")
         for partner in partners:
-            partner_invoices = invoices.filtered(lambda inv: inv.partner_id == partner)
+            partner_invoices = invoices.filtered(
+                lambda inv, p=partner: inv.partner_id == p
+            )
 
             invoice_map = defaultdict(lambda: 0.0)
 
             for invoice in partner_invoices:
                 if invoice._get_reconciled_payments():
                     continue
+                payment_amount = invoice.amount_residual
 
                 adj_amount, rule = invoice._compute_ach_adjustment(invoice_date_due)
 
