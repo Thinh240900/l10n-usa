@@ -3,7 +3,9 @@
     <template id="ach_settings">
         <t t-call="portal.portal_layout">
             <t t-set="page_title" t-value="'Settings'" />
-            <t t-set="additional_title"><t t-esc="page_title" /></t>
+            <t t-set="additional_title">
+                <t t-esc="page_title" />
+            </t>
             <t t-set="breadcrumbs_searchbar" t-value="True" />
 
             <div id="ach-settings" class="container my-0 my-lg-4">
@@ -49,17 +51,17 @@
                                     class="d-flex justify-content-between align-items-center"
                                 >
                                     <div class="bank-info">
-                                        <div class="text-gray fs-16 fw-semibold"><t
-                                                t-esc="bank.acc_holder_name"
-                                            /></div>
+                                        <div class="text-gray fs-16 fw-semibold">
+                                            <t t-esc="bank.acc_holder_name" />
+                                        </div>
                                         <div
                                             class="text-gray fs-12"
                                         >Bank Account ************<t
-                                                t-esc="bank.acc_number and bank.acc_number[-4:] or ''"
-                                            /></div>
-                                        <div class="text-accent-gray fs-12"><t
-                                                t-esc="bank.bank_name"
-                                            /></div>
+                                            t-esc="bank.acc_number and bank.acc_number[-4:] or ''"
+                                        /></div>
+                                        <div class="text-accent-gray fs-12">
+                                            <t t-esc="bank.bank_name" />
+                                        </div>
                                     </div>
 
                                     <a
@@ -71,9 +73,9 @@
                                     </a>
                                     <a t-else="" class="mark-default btn">
                                         <i
-                                            class="fa fa-check me-2"
-                                            aria-hidden="true"
-                                        />
+                                        class="fa fa-check me-2"
+                                        aria-hidden="true"
+                                    />
                                         Default
                                     </a>
                                 </div>
@@ -97,7 +99,6 @@
                         </a>
                     </div>
 
-
                     <t t-if="not credit_cards">
                         <span class="text-gray">No saved card.</span>
                         <a
@@ -105,7 +106,7 @@
                             class="blue-title text-decoration-underline"
                         >Add a credit card</a>
                     </t>
-                     <div t-else="" class="mt-2">
+                    <div t-else="" class="mt-2">
                         <t t-foreach="credit_cards" t-as="credit_card">
                             <div class="bank-account mb-3">
                                 <div
@@ -113,8 +114,8 @@
                                 >
                                     <div class="bank-info">
                                         <div class="text-gray fs-12">************<t
-                                                t-esc="credit_card.display_name and credit_card.display_name[-4:] or ''"
-                                            /></div>
+                                            t-esc="credit_card.display_name and credit_card.display_name[-4:] or ''"
+                                        /></div>
                                     </div>
 
                                     <a
@@ -126,15 +127,15 @@
                                     </a>
                                     <a t-else="" class="mark-default btn">
                                         <i
-                                            class="fa fa-check me-2"
-                                            aria-hidden="true"
-                                        />
+                                        class="fa fa-check me-2"
+                                        aria-hidden="true"
+                                    />
                                         Default
                                     </a>
                                 </div>
                             </div>
                         </t>
-                     </div>
+                    </div>
                 </div>
 
                 <div class="mt-4">
@@ -279,28 +280,28 @@
                                     >
                                         <div class="fw-semibold text-dark">
                                             Bank Account ************<t
-                                                t-esc="partner.autopay_method.acc_number and partner.autopay_method.acc_number[-4:] or ''"
-                                            />
+                                            t-esc="partner.autopay_method.acc_number and partner.autopay_method.acc_number[-4:] or ''"
+                                        />
                                         </div>
                                         <div class="text-gray fs-12">
                                             <t
-                                                t-esc="partner.autopay_method.acc_holder_name"
-                                            /> | <t
-                                                t-esc="partner.autopay_method.bank_name"
-                                            /></div>
+                                            t-esc="partner.autopay_method.acc_holder_name"
+                                        /> | <t
+                                            t-esc="partner.autopay_method.bank_name"
+                                        /></div>
                                     </div>
                                     <div t-elif="bank_accounts" class="bank-info">
                                         <div class="fw-semibold text-dark">
                                             Bank Account ************<t
-                                                t-esc="bank_accounts[0].acc_number and bank_accounts[0].acc_number[-4:] or ''"
-                                            />
+                                            t-esc="bank_accounts[0].acc_number and bank_accounts[0].acc_number[-4:] or ''"
+                                        />
                                         </div>
                                         <div class="text-gray fs-12">
                                             <t
-                                                t-esc="bank_accounts[0].acc_holder_name"
-                                            /> | <t
-                                                t-esc="bank_accounts[0].bank_name"
-                                            /></div>
+                                            t-esc="bank_accounts[0].acc_holder_name"
+                                        /> | <t
+                                            t-esc="bank_accounts[0].bank_name"
+                                        /></div>
                                     </div>
                                     <i class="fa fa-chevron-down text-muted" />
                                 </div>
@@ -311,11 +312,11 @@
                                             <div
                                                 class="fw-semibold text-dark"
                                             >Bank Account ************<t
-                                                    t-esc="bank.acc_number and bank.acc_number[-4:] or ''"
-                                                /></div>
+                                                t-esc="bank.acc_number and bank.acc_number[-4:] or ''"
+                                            /></div>
                                             <div class="text-gray fs-12"><t
-                                                    t-esc="bank.acc_holder_name"
-                                                /> | <t t-esc="bank.bank_name" /></div>
+                                                t-esc="bank.acc_holder_name"
+                                            /> | <t t-esc="bank.bank_name" /></div>
                                         </div>
                                     </t>
                                 </div>
@@ -383,8 +384,8 @@
                                                         <span
                                                             class="text-gray"
                                                         >Repeats every month on the <strong
-                                                                id="repeat-day"
-                                                            /></span>
+                                                            id="repeat-day"
+                                                        /></span>
                                                     </div>
                                                 </div>
                                             </div>

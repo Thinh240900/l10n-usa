@@ -128,7 +128,7 @@ class InvoiceController(PortalAccount):
         invoice_status=None,
         search="",
         search_in="all",
-        **kw
+        **kw,
     ):
         searchbar_inputs = {
             "all": {"label": _("All"), "input": "all"},

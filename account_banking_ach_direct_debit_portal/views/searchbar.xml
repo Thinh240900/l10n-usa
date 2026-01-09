@@ -4,7 +4,6 @@
         <nav
             t-attf-class="searchbar-navbar py-0 mb-2 {{classes if classes else ''}} {{'mt-3 rounded' if breadcrumbs_searchbar else 'border-top-0' }}"
         >
-
             <div class="searchbar-left">
                 <div class="d-none d-md-block">
                     <t t-if="breadcrumbs_searchbar">
@@ -67,7 +66,6 @@
                 </form>
 
                 <div class="d-flex align-items-center justify-content-end">
-
                     <div
                         t-if="searchbar_sortings"
                         class="d-flex align-items-center justify-content-start"

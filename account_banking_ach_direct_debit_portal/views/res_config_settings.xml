@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="res_config_settings_view_form" model="ir.ui.view">
         <field name="name">res.config.settings.payment</field>
         <field name="model">res.config.settings</field>
@@ -219,7 +218,9 @@
                     </div>
                 </div>
 
-                <h3><strong>Auto Pay Options</strong></h3>
+                <h3>
+                    <strong>Auto Pay Options</strong>
+                </h3>
                 <div id="plaid_auto_pay_rules">
                     <div class="row o_settings_container">
                         <div
@@ -273,5 +274,4 @@
             </xpath>
         </field>
     </record>
-
 </odoo>

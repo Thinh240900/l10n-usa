@@ -45,11 +45,9 @@
         name="SO portal: replace checkout with Make Invoice &amp; Pay form"
         priority="110"
     >
-
         <xpath expr="//div[@id='payment_method']" position="attributes">
             <attribute name="t-if">False</attribute>
         </xpath>
-
 
         <xpath expr="//div[@id='payment_method']" position="after">
             <div class="text-center">
@@ -83,5 +81,4 @@
             <span class="text-gray me-1">Next</span>
         </xpath>
     </template>
-
 </odoo>

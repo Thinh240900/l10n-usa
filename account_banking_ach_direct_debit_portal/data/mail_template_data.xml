@@ -20,15 +20,15 @@
                     <t t-foreach="ctx.get('invoice_lines', [])" t-as="inv">
                         <li>
                             Invoice: <t t-out="inv['name']" /> - Amount: <t
-                                t-out="inv['amount']"
-                            /> <t t-out="inv['currency']" />
+                            t-out="inv['amount']"
+                        /> <t t-out="inv['currency']" />
                         </li>
                     </t>
                 </ul>
 
-                <p>The scheduled payment date is <strong><t
-                            t-out="ctx.get('today', '')"
-                        /></strong>.</p>
+                <p>The scheduled payment date is <strong>
+                    <t t-out="ctx.get('today', '')" />
+                </strong>.</p>
 
                 <p
                 >If you have any questions or concerns, please contact our support team.</p>
@@ -57,8 +57,8 @@
                     <t t-foreach="ctx.get('invoice_lines', [])" t-as="inv">
                         <li>
                             Invoice: <t t-out="inv['name']" /> - Amount: <t
-                                t-out="inv['amount']"
-                            /> <t t-out="inv['currency']" />
+                            t-out="inv['amount']"
+                        /> <t t-out="inv['currency']" />
                         </li>
                     </t>
                 </ul>
@@ -90,7 +90,9 @@
 
                 <p>
                     You have successfully enrolled for the
-                    <strong><t t-out="ctx.get('autopay_name', '')" /></strong>
+                    <strong>
+                    <t t-out="ctx.get('autopay_name', '')" />
+                </strong>
                     auto pay method.
                 </p>
 
